@@ -1,0 +1,25 @@
+.bottom {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+
+}
+
+.input {
+    width: 100%;
+}
+
+.button {
+    position: absolute;
+    right: 10px;
+    padding: 0;
+    border: none;
+    background: none;
+    height: 100%;
+}
+
+.submitarrow {
+    width: 15px;
+    height: 15px;
+}

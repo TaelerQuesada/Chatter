@@ -1,0 +1,16 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+
+
+}
+
+.bubble {
+    display: flex;
+    width: 100%;
+    height: auto;
+    border: 2px;
+    border-color: aqua;
+}
