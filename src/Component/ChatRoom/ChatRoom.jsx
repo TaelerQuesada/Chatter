@@ -7,7 +7,7 @@ import Chat from '../Chat/Chat'
 import UserList from '../UserList/UserList'
 import UsernameField from '../UsernameField/UsernameField'
 
-const clientURL = 'ws://master.d1jrjxriv4rhcs.amplifyapp.com/:8000'
+const clientURL = 'wss://s45vegoyui.execute-api.us-east-2.amazonaws.com/Test'
 
 class ChatRoom extends React.Component {
     constructor(props) {
