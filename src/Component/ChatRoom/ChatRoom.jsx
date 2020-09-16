@@ -67,8 +67,8 @@ class ChatRoom extends React.Component {
         console.log("HandleSubmit")
         if (this.state.currentText.length) {
             this.client.send(JSON.stringify({
-                value: this.state.currentText,
-                type: "sendmessage"
+                message: this.state.currentText,
+                action: "onMessage"
             }))
             this.clearField()
         }
