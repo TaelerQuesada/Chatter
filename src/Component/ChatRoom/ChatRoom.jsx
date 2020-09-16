@@ -34,12 +34,11 @@ class ChatRoom extends React.Component {
     componentDidMount() {
         this.client.onopen = (message) => {
             console.log("WebSocket Client Connected")
-            const dataFromServer = JSON.parse(message.data)
+            const dataFromServer = JSON.parse(message)
             console.log("Response: " + dataFromServer)
         }
         this.client.onmessage = (message) => {
-            const dataFromServer = JSON.parse(message.data);
-            const msg = JSON.parse(dataFromServer.message.utf8Data)
+            const msg = JSON.parse(message)
             if (msg.type === "sendmessage") {
                 console.log("Received message from server!");
                 this.setState({
