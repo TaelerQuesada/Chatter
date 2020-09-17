@@ -39,7 +39,7 @@ class ChatRoom extends React.Component {
         }
         this.client.onmessage = (message) => {
             const msg = JSON.parse(message)
-            if (msg.type === "sendmessage") {
+            if (msg.type === "sendMessage") {
                 console.log("Received message from server!");
                 this.setState({
                     bubbles: [...this.state.bubbles, msg.value]
@@ -67,8 +67,8 @@ class ChatRoom extends React.Component {
         console.log("HandleSubmit")
         if (this.state.currentText.length) {
             this.client.send(JSON.stringify({
-                message: this.state.currentText,
-                action: "onMessage"
+                "action": "OnMessage",
+                "message": this.state.currentText
             }))
             this.clearField()
         }
@@ -79,8 +79,8 @@ class ChatRoom extends React.Component {
         console.log("HandleUsernameSubmit")
         if (this.state.username.length) {
             this.client.send(JSON.stringify({
-                value: this.state.username,
-                type: "userlogin"
+                data: this.state.username,
+                message: "userlogin"
             }))
             this.setState({
                 loggedIn: true
