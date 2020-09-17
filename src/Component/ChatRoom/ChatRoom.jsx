@@ -96,7 +96,8 @@ class ChatRoom extends React.Component {
                 }
             }))
             this.setState({
-                loggedIn: true
+                loggedIn: true,
+                users: [...this.state.users, this.state.username]
             })
         }
     }
