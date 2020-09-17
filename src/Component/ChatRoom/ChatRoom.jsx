@@ -38,11 +38,12 @@ class ChatRoom extends React.Component {
             console.log("Response: " + dataFromServer)
         }
         this.client.onmessage = (message) => {
-            const msg = JSON.parse(message)
+            const res = JSON.parse(message)
+            const msg = JSON.parse(res.data)
             if (msg.type === "sendMessage") {
                 console.log("Received message from server!");
                 this.setState({
-                    bubbles: [...this.state.bubbles, msg.value]
+                    bubbles: [...this.state.bubbles, msg.data]
                 })
             } else if (msg.type === "userlogin") {
                 console.log("user login!")
