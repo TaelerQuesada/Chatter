@@ -38,8 +38,7 @@ class ChatRoom extends React.Component {
             console.log("Response: " + dataFromServer)
         }
         this.client.onmessage = (message) => {
-            const res = JSON.parse(message)
-            const msg = JSON.parse(res.data)
+            const msg = JSON.parse(message.data)
             if (msg.type === "sendMessage") {
                 console.log("Received message from server!");
                 this.setState({
