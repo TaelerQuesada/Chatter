@@ -47,7 +47,7 @@ class ChatRoom extends React.Component {
             } else if (msg.type === "userlogin") {
                 console.log("user login!")
                 this.setState({
-                    users: [...this.state.users, msg.value]
+                    users: [...this.state.users, msg.data]
                 })
             }
         }
@@ -68,7 +68,11 @@ class ChatRoom extends React.Component {
         if (this.state.currentText.length) {
             this.client.send(JSON.stringify({
                 "action": "OnMessage",
-                "message": this.state.currentText
+                "message": {
+                    "type": "message",
+                    "text" :this.state.currentText,
+                    "username": this.state.username
+                }
             }))
             this.clearField()
         }
@@ -79,8 +83,11 @@ class ChatRoom extends React.Component {
         console.log("HandleUsernameSubmit")
         if (this.state.username.length) {
             this.client.send(JSON.stringify({
-                data: this.state.username,
-                message: "userlogin"
+                "action": "OnMessage",
+                "message": {
+                    "type": "userlogin",
+                    "username": this.state.username
+                }
             }))
             this.setState({
                 loggedIn: true
