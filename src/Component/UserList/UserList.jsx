@@ -10,8 +10,8 @@ class UserList extends React.Component {
                 <text>Online Users</text>
                 <br />
                 { this.props.users.map(user => (
-                    <div>
-                        <text>{user}</text>
+                    <div key={ user.connectionId }>
+                        <text>{user.name}</text>
                         <br />
                     </div>
                 ))}

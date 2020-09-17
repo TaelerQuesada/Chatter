@@ -49,6 +49,11 @@ class ChatRoom extends React.Component {
                 this.setState({
                     users: [...this.state.users, msg.data]
                 })
+            } else if (msg.type === 'userdisconnect') {
+                console.log("userdisconnect");
+                this.setState((prevState) => ({
+                    users: prevState.data.filter((_,i) => i.connectionId != msg.data.connectionId)
+                }))
             }
         }
     }
