@@ -77,7 +77,7 @@ class ChatRoom extends React.Component {
             this.setState({
                 bubbles: [
                     ...this.state.bubbles, 
-                    this.state.currentText
+                    this.state.username + ': ' + this.state.currentText
                 ]
             })
             this.clearField()
