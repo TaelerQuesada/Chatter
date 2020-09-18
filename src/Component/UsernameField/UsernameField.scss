@@ -1,0 +1,26 @@
+.center {
+    margin: 0 auto;
+    width: 200px;
+    top: 40%;
+    left: 40%;
+    position: absolute;
+    zoom: 1.5;
+}
+
+.input {
+    border-radius: 5px;
+    border: 1px solid #2d9fd9;
+    &:focus {
+        background-color: #2db1d928;
+        outline: 0px solid #2d9fd9;
+    }
+}
+
+.submit {
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #2d9fd9;
+    background-color: #2da3d97c;
+}
+
+

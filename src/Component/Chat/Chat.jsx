@@ -9,7 +9,7 @@ class Chat extends React.Component {
                 { this.props.bubbles.map(item => (
                     <ChatBubble
                         className="bubble"
-                        text={ item }    
+                        item={ item }    
                     />
                 )) }
             </div>

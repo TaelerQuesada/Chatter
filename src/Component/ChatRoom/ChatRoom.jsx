@@ -34,8 +34,6 @@ class ChatRoom extends React.Component {
     componentDidMount() {
         this.client.onopen = (message) => {
             console.log("WebSocket Client Connected")
-            const dataFromServer = JSON.parse(message)
-            console.log("Response: " + dataFromServer)
         }
         this.client.onmessage = (message) => {
             const msg = JSON.parse(message.data)
@@ -49,10 +47,10 @@ class ChatRoom extends React.Component {
                 this.setState({
                     users: [...this.state.users, msg.data]
                 })
-            } else if (msg.type === 'userdisconnect') {
+            } else if (msg.type === "userdisconnect") {
                 console.log("userdisconnect");
                 this.setState((prevState) => ({
-                    users: prevState.users.filter((_,i) => i.connectionId != msg.data)
+                    users: prevState.users.filter((_,i) => i.connectionId !== msg.data)
                 }))
             }
         }
@@ -82,7 +80,10 @@ class ChatRoom extends React.Component {
             this.setState({
                 bubbles: [
                     ...this.state.bubbles, 
-                    this.state.username + ': ' + this.state.currentText
+                    {
+                        username: this.state.username,
+                        text: this.state.currentText
+                    }
                 ]
             })
             this.clearField()
@@ -138,6 +139,7 @@ class ChatRoom extends React.Component {
                     </div> :
                     <UsernameField
                         value={this.state.username}
+                        label={ 'Username' }
                         onChange={this.onUsernameStateChange}
                         handleSubmit={this.handleUsernameSubmit}
                     />}

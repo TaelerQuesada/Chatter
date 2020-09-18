@@ -1,9 +1,6 @@
 import React from 'react';
 import './UserList.scss'
 class UserList extends React.Component {
-    constructor(props) {
-        super(props)
-    }
     render() {
         return (
             <div className="userlist">

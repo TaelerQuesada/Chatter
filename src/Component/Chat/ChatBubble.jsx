@@ -5,14 +5,15 @@ class ChatBubble extends React.Component {
         super(props)
 
         this.state = {
-            text: this.props.text
+            item: this.props.item
         }
     }
 
     render() {
         return (
-            <div className="bubble">
-                <text>{ this.state.text }</text>
+            <div>
+                <text>{ this.state.item.username }</text>
+                <text className="bubble"> { this.state.item.text }</text>
             </div>
         )
     }

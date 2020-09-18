@@ -1,23 +1,23 @@
 import React from 'react'
-import { ReactComponent as Logo } from '../../Assets/up-arrow-svgrepo-com.svg'
-import './UsernameField.css'
+import './UsernameField.scss'
 
 class UsernameField extends React.Component {
     render() {
         return (
             <div className="center">
+                <div>{ this.props.label }</div>
                 <form onSubmit={ this.props.handleSubmit } autoComplete="off">
                     <input
                         id="name"
                         type="text"
+                        className="input"
                         placeholder={ 'Enter username' }
                         value={ this.props.value }
                         onChange={ this.props.onChange }
                     />
                     <button
                         type="submit"
-                        className="botton">
-                            
+                        className="submit">
                         Send
                     </button>
                 </form>

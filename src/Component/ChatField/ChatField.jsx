@@ -18,7 +18,7 @@ class ChatField extends React.Component {
                     <button 
                         type="submit"
                         className="button" >
-                             <img src={ Arrow } className='submitarrow' />
+                             <img src={ Arrow } alt="arrow" className='submitarrow' />
                     </button>
                 </form>
             </div>

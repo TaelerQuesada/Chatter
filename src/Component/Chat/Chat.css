@@ -9,8 +9,9 @@
 
 .bubble {
     display: flex;
-    width: 100%;
-    height: auto;
-    border: 2px;
-    border-color: aqua;
+    width: fit-content;
+    padding: 4px;
+    border-radius: 5px;
+    border: 1px solid #2d9fd9;
+    background-color: #2dc5d948;
 }
