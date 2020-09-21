@@ -1,11 +1,10 @@
 import React from 'react';
 import './ChatRoom.css'
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
-import ChatField from '../ChatField/ChatField'
-import Chat from '../Chat/Chat'
-import UserList from '../UserList/UserList'
-import UsernameField from '../UsernameField/UsernameField'
+import ChatField from '../ChatField/ChatField.jsx'
+import Chat from '../Chat/Chat.jsx'
+import UserList from '../UserList/UserList.jsx'
+import UsernameField from '../UsernameField/UsernameField.jsx'
 
 const clientURL = 'wss://s45vegoyui.execute-api.us-east-2.amazonaws.com/Test'
 
