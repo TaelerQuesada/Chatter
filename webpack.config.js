@@ -1,30 +1,56 @@
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
+
 module.exports = {
-  module: {
+    entry: './src/index.js',
+    output: {
+        path: path.resolve(__dirname, "dist"),
+        filename: "bundle.js"
+    },
     devServer: {
-      contentBase: path.join(__dirname, 'dist'),
+      contentBase: path.join(__dirname, 'public'),
       compress: true,
       port: 9000
     },
-    rules: [
-      {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader"
-        }
-      },
-      {
-        test: /\.scss$/,
-        loader: ['style-loader', 'css-loader?url=false', 'sass-loader'],
-      },
-      {
-        test: /\.css$/,
-        loader: ['style-loader', 'css-loader?url=false']
-      },
-      {
+    module: {
+      rules: [
+        {
+            test: /\.jsx?$/,
+            exclude: /node_modules/,
+            loader: "babel-loader",
+            query:
+            {
+                presets:['@babel/preset-react']
+            }
+        },
+        {
+            test:  /\.(css|scss)$/,
+            include: [
+                path.join(__dirname, "/src/"),
+				/node_modules\/bootstrap/
+            ],
+            use: [
+                // Creates `style` nodes from JS strings
+                'style-loader',
+                // Translates CSS into CommonJS
+                'css-loader',
+                // Compiles Sass to CSS
+                'sass-loader',
+              ],
+        },
+        {
         test: /\.svg$/,
-        loader: 'svg-inline-loader'
-      }
-    ]
-  }
-};
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'svg-url-loader',
+            options: {
+              limit: 10000,
+            },
+          },
+        ],
+      },
+      ]
+    }
+  };

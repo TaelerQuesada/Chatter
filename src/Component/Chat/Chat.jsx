@@ -1,5 +1,5 @@
 import React from 'react'
-import ChatBubble from './ChatBubble'
+import ChatBubble from './ChatBubble.jsx'
 import './Chat.css'
 class Chat extends React.Component {
 
