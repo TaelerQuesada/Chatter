@@ -38,9 +38,10 @@ class ChatRoom extends React.Component {
             const msg = JSON.parse(message.data)
             if (msg.type === "sendMessage") {
                 console.log("Received message from server!");
-                this.setState({
-                    bubbles: [...this.state.bubbles, msg.data]
-                })
+                this.handleChatBubbles(false, msg.data)
+                // this.setState({
+                //     bubbles: [...this.state.bubbles, msg.data]
+                // })
             } else if (msg.type === "userlogin") {
                 console.log("user login!")
                 this.setState({
@@ -76,17 +77,53 @@ class ChatRoom extends React.Component {
                     "username": this.state.username
                 }
             }))
-            this.setState({
-                bubbles: [
-                    ...this.state.bubbles, 
-                    {
-                        username: this.state.username,
-                        text: this.state.currentText
-                    }
-                ]
-            })
+
+            this.handleChatBubbles(true)
             this.clearField()
         }
+    }
+
+    //sentBySelf : boolean to determine if curr bubble was sent by the client or not.
+    handleChatBubbles(sentBySelf, data) {
+        const bubbles = this.state.bubbles;
+        const previousBubble = bubbles[bubbles.length - 1]
+        if (sentBySelf) {
+            if (previousBubble && previousBubble.username === this.state.username) {
+                previousBubble.isLast = false;
+            }
+            this.trimBubble()
+            this.addBubble(previousBubble)
+            this.addBubble({ 
+                username: this.state.username,
+                text: this.state.currentText,
+                isLast: true
+            })
+        } else {
+            if (previousBubble && previousBubble.username === data.username) {
+                previousBubble.isLast = false;
+            }
+            this.trimBubble()
+            this.addBubble(previousBubble)
+            data.isLast = true;
+            this.addBubble(data)
+        }
+    }
+
+    trimBubble() {
+        const bubbles = this.state.bubbles
+        this.setState({
+            bubbles: [
+                ...bubbles.slice(0, bubbles.length - 1)
+            ],
+        })
+    }
+
+    addBubble(bubble) {
+        this.setState({ 
+            bubbles: [
+                ...this.state.bubbles, bubble
+            ]
+         })
     }
 
     handleUsernameSubmit(event) {
