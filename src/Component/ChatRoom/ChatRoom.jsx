@@ -39,9 +39,6 @@ class ChatRoom extends React.Component {
             if (msg.type === "sendMessage") {
                 console.log("Received message from server!");
                 this.handleChatBubbles(false, msg.data)
-                // this.setState({
-                //     bubbles: [...this.state.bubbles, msg.data]
-                // })
             } else if (msg.type === "userlogin") {
                 console.log("user login!")
                 this.setState({
