@@ -37,8 +37,8 @@ class Canvas extends React.Component {
     }
 
     onMouseUp(e) {
+        const ctx = this.canvasRef.current.getContext('2d');
         if (this.state.drawing) {
-            const ctx = this.canvasRef.current.getContext('2d');
             let { x, y } = this.state
             const currX = e.nativeEvent.offsetX / 1.5
             const currY = e.nativeEvent.offsetY /1.5
@@ -51,6 +51,9 @@ class Canvas extends React.Component {
                 drawing: false
             })
         }
+
+        let imgData = ctx.getImageData(0,0, this.props.width, this.props.height)
+        // imgData = JSON.stringify(imgData)
     }
 
     onMouseMove(e) {
@@ -73,7 +76,6 @@ class Canvas extends React.Component {
     }
 
     drawline(ctx, point1, point2) {
-        console.log(point1, ' ', point2)
         ctx.beginPath()
         ctx.strokeStyle = 'black'
         ctx.lineWidth = 1

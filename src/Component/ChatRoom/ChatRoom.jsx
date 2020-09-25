@@ -164,12 +164,12 @@ class ChatRoom extends React.Component {
                         </div>
                         <Canvas
                             width={ 850 }
-                            height={ 850 }    
+                            height={ 850 }   
+                            client={ this.client }  
                         />
                         <UserList
                             className="user-list"
-                            users={this.state.users} 
-                            client={ this.client }    
+                            users={this.state.users}    
                         />
                         <ChatField
                             value={this.state.currentText}
