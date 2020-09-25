@@ -5,7 +5,7 @@ class UsernameField extends React.Component {
     render() {
         return (
             <div className="center">
-                <div>{ this.props.label }</div>
+                <div className="label">{ this.props.label }</div>
                 <form onSubmit={ this.props.handleSubmit } autoComplete="off">
                     <input
                         id="name"

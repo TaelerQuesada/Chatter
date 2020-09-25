@@ -5,6 +5,7 @@ import ChatField from '../ChatField/ChatField.jsx'
 import Chat from '../Chat/Chat.jsx'
 import UserList from '../UserList/UserList.jsx'
 import UsernameField from '../UsernameField/UsernameField.jsx'
+import Canvas from '../Canvas/Canvas.jsx'
 
 const clientURL = 'wss://s45vegoyui.execute-api.us-east-2.amazonaws.com/Test'
 
@@ -161,9 +162,15 @@ class ChatRoom extends React.Component {
                                 bubbles={this.state.bubbles}
                             />
                         </div>
+                        <Canvas
+                            width={ 850 }
+                            height={ 850 }    
+                        />
                         <UserList
                             className="user-list"
-                            users={this.state.users} />
+                            users={this.state.users} 
+                            client={ this.client }    
+                        />
                         <ChatField
                             value={this.state.currentText}
                             onChange={this.onEditorStateChange}

@@ -6,8 +6,12 @@ class ChatBubble extends React.Component {
 
         return (
             <div>
-                <text className="bubble"> { this.props.item.text }</text>
-                <text>{ this.props.item.isLast ? this.props.item.username : '' }</text>
+                <text className="bubble"> {this.props.item.text}</text>
+                { this.props.item.isLast &&
+                    <text className="bubbleName">
+                        { this.props.item.username }
+                    </text>
+                }
             </div>
         )
     }

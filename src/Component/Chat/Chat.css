@@ -11,7 +11,15 @@
     display: flex;
     width: fit-content;
     padding: 4px;
+    font-size: 12px;
     border-radius: 5px;
-    border: 1px solid #2d9fd9;
-    background-color: #2dc5d948;
+    color: #e4e6eb;
+    /* border: 1px solid #2d9fd9; */
+    background-color: #2d6fd9;
+}
+
+.bubbleName {
+    color: #e4e6eb;
+    margin-left: 10px;
+    font-size: 12px;
 }
