@@ -9,6 +9,8 @@ class Canvas extends React.Component {
         this.state = { 
             x: 0, 
             y: 0,
+            firstPoint: {},
+            secondPoint: {},
             drawing: false
         }
 
@@ -16,16 +18,10 @@ class Canvas extends React.Component {
     }
     
     componentDidMount() {
-        this.canvasRef.current.width = this.canvasRef.current.offsetWidth
-        this.canvasRef.current.height = this.canvasRef.current.offsetHeight
-        const rect = this.canvasRef.current.getBoundingClientRect();
-
-        this.client.onmessage = (message) => {
-            const msg = JSON.parse(message.data)
-        }
-    }
-    componentDidUpdate() {
-        // this.updateCanvas();
+        const canvasRef = this.canvasRef.current
+        canvasRef.width = this.canvasRef.current.offsetWidth
+        canvasRef.height = this.canvasRef.current.offsetHeight
+        // const rect = canvasRef.getBoundingClientRect();
     }
 
     onMouseDown(e) {
@@ -37,14 +33,15 @@ class Canvas extends React.Component {
     }
 
     onMouseUp(e) {
-        const ctx = this.canvasRef.current.getContext('2d');
+
         if (this.state.drawing) {
             let { x, y } = this.state
             const currX = e.nativeEvent.offsetX / 1.5
             const currY = e.nativeEvent.offsetY /1.5
-            this.drawline(ctx, 
+            this.drawline(
                 { x , y }, 
-                { x: currX, y: currY } )
+                { x: currX, y: currY } 
+            )
             this.setState({
                 x: 0,
                 y: 0,
@@ -52,20 +49,29 @@ class Canvas extends React.Component {
             })
         }
 
-        let imgData = ctx.getImageData(0,0, this.props.width, this.props.height)
+        //let imgData = ctx.getImageData(0,0, this.props.width, this.props.height)
         // imgData = JSON.stringify(imgData)
     }
 
     onMouseMove(e) {
 
-        const ctx = this.canvasRef.current.getContext('2d');
         let {x, y} = this.state
         if (this.state.drawing) {
             const currX = e.nativeEvent.offsetX/1.5
             const currY = e.nativeEvent.offsetY/1.5
-            this.drawline(ctx, 
+            console.log
+            this.drawline( 
                 { x , y }, 
                 { x: currX, y: currY } )
+
+            this.client.send(JSON.stringify({
+                "action": "OnMessage",
+                "message": {
+                    "type": "draw",
+                    "prev" : { x: x, y: y },
+                    "curr": { x: currX, y: currY }
+                }
+            }))
             
             this.setState({ 
                 x: currX,
@@ -75,14 +81,28 @@ class Canvas extends React.Component {
 
     }
 
-    drawline(ctx, point1, point2) {
+    drawline(point1, point2) {
+        console.log(point1, ' ', point2)
+        const ctx = this.canvasRef.current.getContext('2d');
         ctx.beginPath()
         ctx.strokeStyle = 'black'
-        ctx.lineWidth = 1
+        ctx.lineWidth = 5
         ctx.moveTo(point1.x, point1.y)
         ctx.lineTo(point2.x, point2.y)
         ctx.stroke()
         ctx.closePath()
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log("nextprops ", nextProps)
+        if (nextProps.firstPoint.x && nextProps.secondPoint.x 
+                && nextProps.firstPoint.y && nextProps.secondPoint.y) {
+                this.drawline(nextProps.firstPoint, nextProps.secondPoint)
+                // this.setState({ 
+                //     firstPoint: nextProps.firstPoint, 
+                //     secondPoint: nextProps.secondPoint 
+                // })
+            }
     }
 
     render() {
@@ -101,11 +121,6 @@ class Canvas extends React.Component {
             </div>
         )
     }
-}
-
-function rect(props) {
-    const {ctx, x, y, width, height} = props;
-    ctx.fillRect(x, y, width, height);
 }
 
 export default Canvas

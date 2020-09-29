@@ -20,7 +20,9 @@ class ChatRoom extends React.Component {
             loggedIn: false,
             value: null,
             bubbles: [],
-            users: []
+            users: [],
+            firstPoint: {},
+            secondPoint: {}
         }
 
         this.client = new W3CWebSocket(clientURL)
@@ -37,8 +39,15 @@ class ChatRoom extends React.Component {
         }
         this.client.onmessage = (message) => {
             const msg = JSON.parse(message.data)
-            if (msg.type === "sendMessage") {
+            if (msg.type === "draw") {
+                console.log("draw message:", msg)
+                this.setState({
+                    firstPoint: msg.data.prev,
+                    secondPoint: msg.data.curr
+                })
+            } else if (msg.type === "sendMessage") {
                 console.log("Received message from server!");
+                console.log(msg.data)
                 this.handleChatBubbles(false, msg.data)
             } else if (msg.type === "userlogin") {
                 console.log("user login!")
@@ -48,7 +57,7 @@ class ChatRoom extends React.Component {
             } else if (msg.type === "userdisconnect") {
                 console.log("userdisconnect");
                 this.setState((prevState) => ({
-                    users: prevState.users.filter((_,i) => i.connectionId !== msg.data)
+                    users: prevState.users.filter((_, i) => i.connectionId !== msg.data)
                 }))
             }
         }
@@ -71,7 +80,7 @@ class ChatRoom extends React.Component {
                 "action": "OnMessage",
                 "message": {
                     "type": "message",
-                    "text" :this.state.currentText,
+                    "text": this.state.currentText,
                     "username": this.state.username
                 }
             }))
@@ -90,8 +99,10 @@ class ChatRoom extends React.Component {
                 previousBubble.isLast = false;
             }
             this.trimBubble()
-            this.addBubble(previousBubble)
-            this.addBubble({ 
+            if (previousBubble) {
+                this.addBubble(previousBubble)
+            }
+            this.addBubble({
                 username: this.state.username,
                 text: this.state.currentText,
                 isLast: true
@@ -101,10 +112,13 @@ class ChatRoom extends React.Component {
                 previousBubble.isLast = false;
             }
             this.trimBubble()
-            this.addBubble(previousBubble)
+            if (previousBubble) {
+                this.addBubble(previousBubble)
+            }
             data.isLast = true;
             this.addBubble(data)
         }
+
     }
 
     trimBubble() {
@@ -117,11 +131,13 @@ class ChatRoom extends React.Component {
     }
 
     addBubble(bubble) {
-        this.setState({ 
+        console.log("addBubble!")
+        console.log(bubble)
+        this.setState({
             bubbles: [
                 ...this.state.bubbles, bubble
             ]
-         })
+        })
     }
 
     handleUsernameSubmit(event) {
@@ -136,7 +152,7 @@ class ChatRoom extends React.Component {
                 }
             }))
             this.setState({
-                loggedIn : true
+                loggedIn: true
             })
         }
     }
@@ -163,13 +179,15 @@ class ChatRoom extends React.Component {
                             />
                         </div>
                         <Canvas
-                            width={ 850 }
-                            height={ 850 }   
-                            client={ this.client }  
+                            width={500}
+                            height={500}
+                            client={this.client}
+                            firstPoint={this.state.firstPoint}
+                            secondPoint={this.state.secondPoint}
                         />
                         <UserList
                             className="user-list"
-                            users={this.state.users}    
+                            users={this.state.users}
                         />
                         <ChatField
                             value={this.state.currentText}
@@ -179,7 +197,7 @@ class ChatRoom extends React.Component {
                     </div> :
                     <UsernameField
                         value={this.state.username}
-                        label={ 'Username' }
+                        label={'Username'}
                         onChange={this.onUsernameStateChange}
                         handleSubmit={this.handleUsernameSubmit}
                     />}

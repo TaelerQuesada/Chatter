@@ -3,7 +3,6 @@ import './Chat.css'
 class ChatBubble extends React.Component {
 
     render() {
-
         return (
             <div>
                 <text className="bubble"> {this.props.item.text}</text>
