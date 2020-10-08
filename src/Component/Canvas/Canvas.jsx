@@ -1,5 +1,8 @@
 import React from 'react';
+import { SketchPicker } from 'react-color'
 import './Canvas.scss'
+
+
 class Canvas extends React.Component {
 
     constructor(props) {
@@ -11,7 +14,9 @@ class Canvas extends React.Component {
             y: 0,
             firstPoint: {},
             secondPoint: {},
-            drawing: false
+            drawing: false,
+            selectedColor: '#000000',
+            background: '#fff',
         }
 
         this.client = this.props.client
@@ -26,8 +31,8 @@ class Canvas extends React.Component {
 
     onMouseDown(e) {
         this.setState({ 
-            x: e.nativeEvent.offsetX1/1.5,
-            y: e.nativeEvent.offsetY/1.5,
+            x: e.nativeEvent.offsetX,
+            y: e.nativeEvent.offsetY,
             drawing:true
          })
     }
@@ -36,11 +41,12 @@ class Canvas extends React.Component {
 
         if (this.state.drawing) {
             let { x, y } = this.state
-            const currX = e.nativeEvent.offsetX / 1.5
-            const currY = e.nativeEvent.offsetY /1.5
+            const currX = e.nativeEvent.offsetX
+            const currY = e.nativeEvent.offsetY
             this.drawline(
                 { x , y }, 
-                { x: currX, y: currY } 
+                { x: currX, y: currY },
+                this.state.selectedColor
             )
             this.setState({
                 x: 0,
@@ -57,12 +63,13 @@ class Canvas extends React.Component {
 
         let {x, y} = this.state
         if (this.state.drawing) {
-            const currX = e.nativeEvent.offsetX/1.5
-            const currY = e.nativeEvent.offsetY/1.5
+            const currX = e.nativeEvent.offsetX
+            const currY = e.nativeEvent.offsetY
             console.log
             this.drawline( 
                 { x , y }, 
-                { x: currX, y: currY } )
+                { x: currX, y: currY },
+                this.state.selectedColor )
 
             this.client.send(JSON.stringify({
                 "action": "OnMessage",
@@ -81,11 +88,11 @@ class Canvas extends React.Component {
 
     }
 
-    drawline(point1, point2) {
+    drawline(point1, point2, selectedColor) {
         console.log(point1, ' ', point2)
         const ctx = this.canvasRef.current.getContext('2d');
         ctx.beginPath()
-        ctx.strokeStyle = 'black'
+        ctx.strokeStyle = selectedColor
         ctx.lineWidth = 5
         ctx.moveTo(point1.x, point1.y)
         ctx.lineTo(point2.x, point2.y)
@@ -98,16 +105,45 @@ class Canvas extends React.Component {
         if (nextProps.firstPoint.x && nextProps.secondPoint.x 
                 && nextProps.firstPoint.y && nextProps.secondPoint.y) {
                 this.drawline(nextProps.firstPoint, nextProps.secondPoint)
-                // this.setState({ 
-                //     firstPoint: nextProps.firstPoint, 
-                //     secondPoint: nextProps.secondPoint 
-                // })
             }
     }
+
+    // handleChangeComplete = (color) => {
+    //     this.setState({ selectedColor: color.hex })
+    // }
+
+
+    handleChange = (color) => {
+        console.log(color.hex)
+        this.setState({ selectedColor: color.hex });
+    };
+    
+    handleChangeComplete = (color) => {
+        console.log("CHANGE COMPLETE!")
+        console.log(color.hex)
+        this.setState({ selectedColor: color.hex });
+    }
+
+    sendCanvasState = () => {
+        this.client.send(JSON.stringify({
+            "action": "OnMessage",
+            "message": {
+                "type": "draw",
+                "prev" : { x: x, y: y },
+                "curr": { x: currX, y: currY }
+            }
+        }))
+    }
+    
 
     render() {
         return (
             <div className="canvasContainer">
+                <SketchPicker
+                    color={ this.state.selectedColor }
+                    onChange={ this.handleChange }
+                    onChangeComplete={ this.handleChangeComplete }
+                />
                 <div className="canvas">
                     <canvas 
                         onMouseMove={ this.onMouseMove.bind(this) } 
